@@ -19,7 +19,7 @@ open class IPINFO{
 
 extension String{
     
-    var isValidIP: Bool {
+    var isValidIP: Bool{
         
         var sin = sockaddr_in()
         var sin6 = sockaddr_in6()
@@ -38,5 +38,3 @@ extension String{
         
     }
 }
-
-
