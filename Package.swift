@@ -25,8 +25,5 @@ let package = Package(
         .target(
             name: "ipinfoKit",
             dependencies: ["Alamofire"]),
-//        .testTarget(
-//            name: "ipinfoKitTests",
-//            dependencies: ["ipinfoKit"]),
     ]
 )
