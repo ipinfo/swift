@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+
 extension UserDefaults {
     func set<T: Encodable>(encodable: T, forKey key: String) {
         if let data = try? JSONEncoder().encode(encodable) {
