@@ -7,7 +7,7 @@
 
 import Foundation
 extension IPINFO {
-    public func getGeoLocation(ip: String, completion: @escaping (_ status: Response,_ data: Data,_ msg: String)->()) {
+    public func getDetails(ip: String, completion: @escaping (_ status: Response,_ data: Data,_ msg: String)->()) {
         // Check if IP is BOGON
         if isBogonIP(ip) {
             completion(.failure, Data(), "IP is Bogon") // Call the completion handler with failure status and empty data, indicating that the IP is a BOGON IP

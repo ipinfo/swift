@@ -1,7 +1,7 @@
 
 # [<img src="https://ipinfo.io/static/ipinfo-small.svg" alt="IPinfo" width="24"/>](https://ipinfo.io/) IPinfo Swift Client Library
 
-This is the official Go client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to lookup your own IP address, or get any of the following details for other IP addresses:
+This is the official Swift client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to lookup your own IP address, or get any of the following details for other IP addresses:
 
 - [IP to Geolocation](https://ipinfo.io/ip-geolocation-api) (city, region, country, postal code, latitude and longitude)
 - [IP to ASN](https://ipinfo.io/asn-api) (ISP or network operator, associated domain name, and type, such as business, hosting or company)
@@ -11,8 +11,6 @@ This is the official Go client library for the [IPinfo.io](https://ipinfo.io) IP
 You'll need an IPinfo API access token, which you can get by signing up for a free account at [https://ipinfo.io/signup](https://ipinfo.io/signup).
 
 The free plan is limited to 50,000 requests per month, and doesn't include some of the data fields such as IP type and company data. To enable all the data fields and additional request volumes see [https://ipinfo.io/pricing](https://ipinfo.io/pricing)
-
-You can find the full package level documentation here:https://pkg.go.dev/github.com/ipinfo/swift
 
 
 ## Installation
@@ -29,11 +27,11 @@ dependencies: [
 ]
 ```
 # Authentication
-The IPinfo Swift library can be authenticated with your IPinfo API access token, which is passed with this key `IPInfoKitAccessToken` in `info.plist` file. Your IPInfo access token can be found in the account section of IPinfo's website after you have signed in : https://ipinfo.io/account/token
+The IPinfo Swift library can be authenticated with your IPinfo API access token, which is passed with this key `IPInfoKitAccessToken` in `info.plist` file. Your IPinfo access token can be found in the account section of IPinfo's website after you have signed in: https://ipinfo.io/account/token
 
 # Geolocation
 ```swift
-IPINFO.shared.getGeoLocation(ip: "39.53.87.37") { status, data, msg in
+IPINFO.shared.getDetails(ip: "39.53.87.37") { status, data, msg in
     switch status {
         case .success:
             print(data)
