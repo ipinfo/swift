@@ -24,6 +24,7 @@ open class Constants{
     static var APP_NAME: String{
         return Bundle.main.appName ?? emptyString
     }
+    
     static var ACCESS_TOKEN: String{
         get{
             Bundle.main.accessToken ?? emptyString

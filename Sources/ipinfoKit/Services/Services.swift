@@ -13,23 +13,25 @@ extension Service{
         case geoLocation(ipAddress: String)
         case ASN(asn: String)
         case batch(withFilter: Bool)
-        
     }
 }
+
 extension Service.Router{
+    
     var endPoint: String{
         switch self {
         case .geoLocation(let ipAddress):
-            return "https://www.ipinfo.io/\(ipAddress)/json"
+            return "\(Service.shared.ipInfoURL)/\(ipAddress)/json"
         case .ASN(let asn):
-            return "https://www.ipinfo.io/\(asn)/json"
+            return "\(Service.shared.ipInfoURL)/\(asn)/json"
         case .batch(let withFilter):
-            return "https://ipinfo.io/batch" + (withFilter ? "&filter=1" : "")
+            return "\(Service.shared.ipInfoURL)/batch" + (withFilter ? "&filter=1" : "")
         }
     }
 }
 
 class Service{
+    var ipInfoURL = "https://www.ipinfo.io"
     static let shared = Service()
     let headers: HTTPHeaders = [
         "Authorization": "Bearer \(Constants.ACCESS_TOKEN)"

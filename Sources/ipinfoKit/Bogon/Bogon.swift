@@ -39,6 +39,7 @@ extension IPINFO{
         }
         return false
     }
+    
     func ipToUInt32(_ ipAddress: String) -> UInt32 {
         let parts = ipAddress.split(separator: ".").map { UInt8($0) ?? UInt8() }
         return (UInt32(parts[0]) << 24) | (UInt32(parts[1]) << 16) | (UInt32(parts[2]) << 8) | UInt32(parts[3])
