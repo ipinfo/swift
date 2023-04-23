@@ -23,7 +23,7 @@ Once you have your Swift package set up, adding Alamofire as a dependency is as 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ipinfo/swift", .upToNextMajor(from: "0.0.1"))
+    .package(url: "https://github.com/ipinfo/swift", .upToNextMajor(from: "0.1.0"))
 ]
 ```
 # Authentication
