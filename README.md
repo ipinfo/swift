@@ -1,11 +1,11 @@
 
 # [<img src="https://ipinfo.io/static/ipinfo-small.svg" alt="IPinfo" width="24"/>](https://ipinfo.io/) Official Swift client library for IPinfo API (IP geolocation and other types of IP data)
 
-This is the official Swift client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to lookup your own IP address, or get any of the following details for other IP addresses:
+This is the official Swift client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to look up your own IP address, or get any of the following details for other IP addresses:
 
-- [IP to Geolocation](https://ipinfo.io/ip-geolocation-api) (city, region, country, postal code, latitude and longitude)
-- [IP to ASN](https://ipinfo.io/asn-api) (ISP or network operator, associated domain name, and type, such as business, hosting or company)
-- [Batch](https://ipinfo.io/developers/advanced-usage#batching-requests) (Our /batch API endpoint allows you to group up to 1000 IPinfo API requests into a single request. This can really speed up processing of bulk IP lookups, and it can also be useful if you want to lookup information across our different APIs.)
+- [IP to Geolocation](https://ipinfo.io/ip-geolocation-api) (city, region, country, postal code, latitude, and longitude)
+- [IP to ASN](https://ipinfo.io/asn-api) (ISP or network operator, associated domain name, and types such as business, hosting, or company)
+- [Batch](https://ipinfo.io/developers/advanced-usage#batching-requests) (Our /batch API endpoint allows you to group up to 1000 IPinfo API requests into a single request. This can really speed up the processing of bulk IP lookups, and it can also be useful if you want to look up information across our different APIs.)
 
 # Getting Started
 You'll need an IPinfo API access token, which you can get by signing up for a free account at [https://ipinfo.io/signup](https://ipinfo.io/signup).
@@ -67,7 +67,7 @@ IPINFO.shared.getBatch(ipAddresses: ipAddresses, withFilter: false) { response, 
 
 # Other Libraries
 
-There are official [IPinfo client libraries](https://ipinfo.io/developers/libraries) available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails and Laravel. There are also many third party libraries and integrations available for our API.
+There are official [IPinfo client libraries](https://ipinfo.io/developers/libraries) available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails, and Laravel. There are also many third-party libraries and integrations available for our API.
 
 # About IPinfo
 
