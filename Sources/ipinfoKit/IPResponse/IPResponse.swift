@@ -26,7 +26,8 @@ public class IPResponse: Codable {
     public let abuse: Abuse?
     public let domains: Domains?
     public var context: CountryData? = CountryData()
-
+    public var readme: String?
+    
     public init(
         ip: String,
         hostname: String?,

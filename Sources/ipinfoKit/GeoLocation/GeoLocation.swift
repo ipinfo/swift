@@ -29,4 +29,20 @@ extension IPINFO {
             }
         }
     }
+    
+    public func lookupIP(ip: String, completion: @escaping (_ status: Response,_ ipResponse: IPResponse?,_ msg: String?)->()){
+        getDetails(ip: ip) { status, data, msg in
+            switch status {
+            case .success:
+                do {
+                    let response = try JSONDecoder().decode(IPResponse.self, from: data)
+                    completion(.success, response, nil)
+                } catch {
+                    completion(.failure, nil, error.localizedDescription)
+                }
+            case .failure:
+                completion(.failure, nil, msg)
+            }
+        }
+    }
 }

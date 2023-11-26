@@ -5,10 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "ipinfoKit",
-    platforms: [.macOS(.v10_13),
-                .iOS(.v12),
-                  .tvOS(.v11),
-                  .watchOS(.v4)],
+    platforms: [.iOS(.v12)],
       products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -25,5 +22,13 @@ let package = Package(
         .target(
             name: "ipinfoKit",
             dependencies: ["Alamofire"]),
+        .testTarget(
+            name: "ipinfoKitTests",
+            dependencies: ["ipinfoKit"],
+            path: "Tests",
+            sources: [
+                "ipinfoKitTests/ipinfoKitTests.swift",
+            ]
+        )
     ]
 )
