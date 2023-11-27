@@ -1,10 +1,11 @@
 
+
 # [<img src="https://ipinfo.io/static/ipinfo-small.svg" alt="IPinfo" width="24"/>](https://ipinfo.io/) Official Swift client library for IPinfo API (IP geolocation and other types of IP data)
 
 This is the official Swift client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to look up your own IP address, or get any of the following details for other IP addresses:
 
 - [IP to Geolocation](https://ipinfo.io/ip-geolocation-api) (city, region, country, postal code, latitude, and longitude)
-- [IP to ASN](https://ipinfo.io/asn-api) (ISP or network operator, associated domain name, and types such as business, hosting, or company)
+- [IP to ASN](https://ipinfo.io/asn-api) (ISP or network operator, associaåted domain name, and types such as business, hosting, or company)
 - [Batch](https://ipinfo.io/developers/advanced-usage#batching-requests) (Our /batch API endpoint allows you to group up to 1000 IPinfo API requests into a single request. This can really speed up the processing of bulk IP lookups, and it can also be useful if you want to look up information across our different APIs.)
 
 # Getting Started
@@ -64,7 +65,79 @@ IPINFO.shared.getBatch(ipAddresses: ipAddresses, withFilter: false) { response, 
     }
 }
 ```
-
+#### Country Name Lookup
+This library provides a system to lookup country names through ISO2 country codes.
+```swift
+IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
+    guard let response else {return}
+    switch status {
+        case .success:
+            response.setContext(response.context ?? CountryData())
+            // Print out the country code
+            print(response.country ?? "US")
+            // Print out the country name
+            print(response.getCountryName() ?? "United States")
+        case .failure:
+            print(msg)
+    }
+}
+```
+#### EU Country Lookup
+This library provides a system to lookup if a country is a member of the European Union (EU) through ISO2 country codes.
+```swift
+IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
+    guard let response else {return}
+    switch status {
+        case .success:
+            response.setContext(response.context ?? CountryData())
+            // Print out whether the country is a member of the EU
+            print(response.isEU() ?? false)
+        case .failure:
+            print(msg)
+    }
+}
+```
+#### Internationalization
+This library provides a system to lookup if a country is a member of the European Union (EU), emoji and unicode of the country's flag, code and symbol of the country's currency, and public link to the country's flag image as an SVG and continent code and name through ISO2 country codes.
+```swift
+IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
+    guard let response else {return}
+    switch status {
+        case .success:
+            response.setContext(response.context ?? CountryData())
+            // Print out whether the country is a member of the EU
+            print(response.isEU() ?? false)
+            // CountryFlag{emoji='🇺🇸',unicode='U+1F1FA U+1F1F8'}
+            print(response.getCountryFlag() ?? CountryFlag(emoji: "🇺🇸", unicode: "U+1F1FA U+1F1F8"))
+            // https://cdn.ipinfo.io/static/images/countries-flags/US.svg
+            print(response.getCountryFlagURL() ?? "https://cdn.ipinfo.io/static/images/countries-flags/US.svg")
+            // CountryCurrency{code='USD',symbol='$'}
+            print(response.getCountryCurrency()?.code ?? "USD")
+            print(response.getCountryCurrency()?.symbol ?? "$")
+            // Continent{code='NA',name='North America'}
+            print(response.getContinent()?.code ?? "NA")
+            print(response.getContinent()?.name ?? "North America")
+        case .failure:
+            print(msg)
+    }
+}
+```
+#### Location Information
+This library provides an easy way to get the latitude and longitude of an IP Address:
+```swift
+IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
+    guard let response else {return}
+    switch status {
+        case .success:
+            response.setContext(response.context ?? CountryData())
+            // Print out the Latitude and Longitude
+            print(response.getLatitude() ?? "")
+            print(response.getLongitude() ?? "")
+         case .failure:
+            print(msg)
+    }
+}
+```
 # Other Libraries
 
 There are official [IPinfo client libraries](https://ipinfo.io/developers/libraries) available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails, and Laravel. There are also many third-party libraries and integrations available for our API.
