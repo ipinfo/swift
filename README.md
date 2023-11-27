@@ -65,7 +65,7 @@ IPINFO.shared.getBatch(ipAddresses: ipAddresses, withFilter: false) { response, 
     }
 }
 ```
-#### Country Name Lookup
+# Country Name Lookup
 This library provides a system to lookup country names through ISO2 country codes.
 ```swift
 IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
@@ -82,7 +82,7 @@ IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
     }
 }
 ```
-#### EU Country Lookup
+# EU Country Lookup
 This library provides a system to lookup if a country is a member of the European Union (EU) through ISO2 country codes.
 ```swift
 IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
@@ -97,7 +97,7 @@ IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
     }
 }
 ```
-#### Internationalization
+# Internationalization
 This library provides a system to lookup if a country is a member of the European Union (EU), emoji and unicode of the country's flag, code and symbol of the country's currency, and public link to the country's flag image as an SVG and continent code and name through ISO2 country codes.
 ```swift
 IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
@@ -122,7 +122,7 @@ IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
     }
 }
 ```
-#### Location Information
+# Location Information
 This library provides an easy way to get the latitude and longitude of an IP Address:
 ```swift
 IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
