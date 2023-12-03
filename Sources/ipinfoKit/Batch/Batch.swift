@@ -1,41 +1,57 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by ahmed on 2023-04-09.
 //
 
 import Foundation
 extension IPINFO{
-    public func getBatch(ipAddresses:  [String], withFilter: Bool, completion: @escaping (_ status: Response,_ data: Data,_ msg: String)->()) {
-        
-        var bogonIPs: [String] = [] // Array to store invalid/bogon IP addresses
-        var validIPs: [String] = [] // Array to store valid IP addresses
+    public func getBatch(ipAddresses:  [String], withFilter: Bool, completion: @escaping (_ status: Response,_ data: [String: Any ]?,_ msg: String)->()){
+        var result: [String: Any]
         var newIPs: [String] = [] // Array to store new IP addresses that are not present in the cache
-        var oldIPs: [String] = [] // Array to store old IP addresses that are present in the cache
+        result = [String: Any]()
         // Loop through the input IP addresses and separate them into valid and bogon IP addresses
         for ipAddress in ipAddresses {
-            if isBogonIP(ipAddress) {
-                bogonIPs.append(ipAddress)
-            } else {
-                validIPs.append(ipAddress)
-            }
-        }
-        // If there are bogon IP addresses, print a message indicating that they are skipped
-        if bogonIPs.count > 0 {
-            print("Skipping bogon IPs: \(bogonIPs)")
-        }
-        // Loop through the valid IP addresses and separate them into new and old IP addresses based on their presence in the cache
-        for eachValidIP in validIPs{
-            if Global.shared.Cache[eachValidIP] == nil {
-                newIPs.append(eachValidIP)
+            
+            if ipAddress.starts(with: "AS"){
+                if CachingManager.shared.getASNDataFromCache()[ipAddress] == nil{
+                    newIPs.append(ipAddress)
+                }else{
+                    result[ipAddress] = CachingManager.shared.getASNDataFromCache()[ipAddress]
+                }
+            }else if ipAddress.contains("/"){
+                newIPs.append(ipAddress)
+            }else if ipAddress.isValidIP == .IPv4{
+                if isBogonIP(ipAddress){
+                    result[ipAddress] = [
+                        [
+                            "bogon": true,
+                            "ip": ipAddress
+                        ]
+                    ]
+                }else{
+                    if CachingManager.shared.getDataFromCache()[ipAddress] == nil {
+                        newIPs.append(ipAddress)
+                    } else {
+                        result[ipAddress] = CachingManager.shared.getDataFromCache()[ipAddress]
+                    }
+                }
+            }else if ipAddress.isValidIP == .IPv6{
+                if CachingManager.shared.getDataFromCache()[ipAddress] == nil {
+                    newIPs.append(ipAddress)
+                }else{
+                    result[ipAddress] = CachingManager.shared.getDataFromCache()[ipAddress]
+                }
             }else{
-                oldIPs.append(eachValidIP)
+                print("Invalid Data")
             }
+            
         }
+        
         // Serialize the new IP addresses into JSON data
         guard let jsonData = try? JSONSerialization.data(withJSONObject: newIPs, options: []) else {
-            completion(.failure, Data(), "Failed to serialize request body")
+            completion(.failure, nil, "Failed to serialize request body")
             return
         }
         // Set the request headers
@@ -52,37 +68,56 @@ extension IPINFO{
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             // Handle any error that occurred during the request
             if let error = error {
-                completion(.failure, Data(), error.localizedDescription)
+                completion(.failure, nil, error.localizedDescription)
                 return
             }
             // Handle empty response data
             guard let data = data else {
-                completion(.failure, Data(), "Empty response data")
+                completion(.failure, nil, "Empty response data")
                 return
             }
             do {
-                var json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] // Deserialize incoming data into a JSON dictionary
-                
+                let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] // Deserialize incoming data into a JSON dictionary
                 for eachIP in newIPs {
-                    if let ipAddress = json?[eachIP] as? [String: Any] {
-                        let ipAddressData = try JSONSerialization.data(withJSONObject: ipAddress, options: []) // Serialize the IP address data into JSON data
-                        Global.shared.Cache[eachIP] = ipAddressData // Store the IP address data into a shared cache
-                        self.saveResult(Global.shared.Cache) // Save the updated cache
+                    
+                    result[eachIP] = json?[eachIP] //as? [String: Any]
+                    
+                    if eachIP.starts(with: "AS"){
+                        if let asnData = result[eachIP] as? ASNResponse{
+                            CachingManager.shared.saveASNResult([eachIP: asnData])
+                        }
+                    }else if eachIP.isValidIP == .IPv4 || eachIP.isValidIP == .IPv6{
+                        if let ipData = result[eachIP] as? IPResponse{
+                            CachingManager.shared.saveResult([eachIP: ipData])
+                        }
                     }
                 }
-                for eachIP in oldIPs {
-                    if oldIPs.count == 0 {
-                        return // Return early if there are no old IP addresses to process
-                    }
-                    json?[eachIP] = try JSONSerialization.jsonObject(with: Global.shared.Cache[eachIP] ?? Data(), options: []) as? [String: Any] // Deserialize cached data and update the JSON dictionary with it
-                }
-                let ipAddressData = try JSONSerialization.data(withJSONObject: json ?? [String: Any](), options: []) // Serialize the updated JSON dictionary into data
-                completion(.success, ipAddressData, "Success") // Call the completion handler with success status and the updated data
             } catch {
-                debugPrint("Failed to Save Bulk response in Cache") // Handle any errors that occur during JSON serialization/deserialization
+                // Handle any errors that occur during JSON serialization/deserialization
+                debugPrint("Failed to Save Bulk response in Cache")
+                
             }
-            completion(.success, data, "Success")
+            
+            completion(.success, result, "Success")
         }
         task.resume()
     }
+}
+extension String{
+    var isValidIP: IPType {
+        let ipv4Pattern = #"^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.){2}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$"#
+        
+        let ipv6Pattern = #"^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]))$"#
+        
+        if let _ = self.range(of: ipv4Pattern, options: .regularExpression) {
+            return .IPv4
+        } else if let _ = self.range(of: ipv6Pattern, options: .regularExpression) {
+            return .IPv6
+        } else {
+            return .none
+        }
+    }
+}
+enum IPType: Int{
+    case IPv4 = 0, IPv6, none
 }

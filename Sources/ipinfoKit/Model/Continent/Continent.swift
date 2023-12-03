@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class Continent {
+public class Continent:Codable {
     public let code: String
     public let name: String
 

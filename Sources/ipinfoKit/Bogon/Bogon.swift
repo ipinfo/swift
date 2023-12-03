@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by ahmed on 2023-04-09.
 //
@@ -8,6 +8,9 @@
 import Foundation
 extension IPINFO{
     func isBogonIP(_ ipAddress: String) -> Bool {
+        if ipAddress.isValidIP == .IPv6{
+            return false
+        }
         let ipString = ipAddress.prefix(while: { $0 != "/" })
         let bogonRanges = [
             "0.0.0.0/8", // Current network (RFC 1122)

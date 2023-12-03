@@ -1,14 +1,12 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by mslm on 14/03/2023.
 //
 
 import Foundation
 import UIKit
-import Network
-import SystemConfiguration.CaptiveNetwork
 
 public let emptyString = ""
 
@@ -34,4 +32,5 @@ open class Constants{
 }
 struct UserDefaultKey {
     static let saveResultKey = "Saved Result"
+    static let saveASNData =  "SAVE_ASN_DATA"
 }
