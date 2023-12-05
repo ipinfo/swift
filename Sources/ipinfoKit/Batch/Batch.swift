@@ -22,7 +22,7 @@ extension IPINFO{
                 }
             }else if ipAddress.contains("/"){
                 newIPs.append(ipAddress)
-            }else if ipAddress.isValidIP == .IPv4{
+            }else if ipAddress.ipType == .IPv4{
                 if isBogonIP(ipAddress){
                     result[ipAddress] = [
                         [
@@ -37,7 +37,7 @@ extension IPINFO{
                         result[ipAddress] = CachingManager.shared.getDataFromCache()[ipAddress]
                     }
                 }
-            }else if ipAddress.isValidIP == .IPv6{
+            }else if ipAddress.ipType == .IPv6{
                 if CachingManager.shared.getDataFromCache()[ipAddress] == nil {
                     newIPs.append(ipAddress)
                 }else{
@@ -86,7 +86,7 @@ extension IPINFO{
                         if let asnData = result[eachIP] as? ASNResponse{
                             CachingManager.shared.saveASNResult([eachIP: asnData])
                         }
-                    }else if eachIP.isValidIP == .IPv4 || eachIP.isValidIP == .IPv6{
+                    }else if eachIP.ipType == .IPv4 || eachIP.ipType == .IPv6{
                         if let ipData = result[eachIP] as? IPResponse{
                             CachingManager.shared.saveResult([eachIP: ipData])
                         }
@@ -104,7 +104,7 @@ extension IPINFO{
     }
 }
 extension String{
-    var isValidIP: IPType {
+    var ipType: IPType {
         let ipv4Pattern = #"^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.){2}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$"#
         
         let ipv6Pattern = #"^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]))$"#

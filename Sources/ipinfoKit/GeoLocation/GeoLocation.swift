@@ -10,7 +10,7 @@ extension IPINFO {
     public func getDetails(ip: String, completion: @escaping (_ status: Response,_ data: IPResponse?,_ msg: String?)->()) {
         
         // Check if IP is BOGON
-        if isBogonIP(ip) && ip.isValidIP == .IPv4{
+        if isBogonIP(ip) && ip.ipType == .IPv4{
             completion(.failure, nil, "IP is Bogon") // Call the completion handler with failure status and empty data, indicating that the IP is a BOGON IP
         }else {
             if CachingManager.shared.getDataFromCache()[ip] == nil { // Check if the IP data is present in the cache

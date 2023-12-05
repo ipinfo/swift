@@ -31,7 +31,7 @@ extension Service.Router{
 }
 
 class Service{
-    var ipInfoURL = "https://www.ipinfo.io"
+    var ipInfoURL = "https://ipinfo.io"
     static let shared = Service()
     let headers: HTTPHeaders = [
         "Authorization": "Bearer \(Constants.ACCESS_TOKEN)"

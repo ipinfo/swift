@@ -8,7 +8,7 @@
 import Foundation
 extension IPINFO{
     func isBogonIP(_ ipAddress: String) -> Bool {
-        if ipAddress.isValidIP == .IPv6{
+        if ipAddress.ipType == .IPv6{
             return false
         }
         let ipString = ipAddress.prefix(while: { $0 != "/" })
