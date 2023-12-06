@@ -33,18 +33,4 @@ struct Prefix:Codable {
         self.status = status
         self.domain = domain
     }
-
-    func toString() -> String {
-        return """
-        Prefix{
-            netblock='\(netblock)',
-            id='\(id)',
-            name='\(name)',
-            country='\(country)',
-            size='\(size)',
-            status='\(status)',
-            domain='\(domain)'
-        }
-        """
-    }
 }
