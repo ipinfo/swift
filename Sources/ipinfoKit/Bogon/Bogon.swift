@@ -8,7 +8,7 @@
 import Foundation
 extension IPINFO{
     func isBogonIP(_ ipAddress: String) -> Bool {
-        // TODO: Skipping local-bogon checking for IPv6 because of not supporting v6 checks below yet.
+        // TODO: Skipping local-bogon checking for IPv6 because of not supporting IPv6 checks below yet.
         if ipAddress.ipType == .IPv6{
             return false
         }
