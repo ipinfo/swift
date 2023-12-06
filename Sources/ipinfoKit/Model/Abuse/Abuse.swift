@@ -29,8 +29,4 @@ public class Abuse: Codable {
         self.network = network
         self.phone = phone
     }
-
-    public var description: String {
-        return "Abuse{address='\(address)', country='\(country)', email='\(email)', name='\(name)', network='\(network)', phone='\(phone)'}"
-    }
 }

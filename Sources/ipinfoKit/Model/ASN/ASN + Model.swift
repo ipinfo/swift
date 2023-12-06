@@ -26,8 +26,4 @@ public class ASN:Codable {
         self.route = route
         self.type = type
     }
-
-    public var description: String {
-        return "ASN{asn='\(asn)', name='\(name)', domain='\(domain)', route='\(route)', type='\(type)'}"
-    }
 }

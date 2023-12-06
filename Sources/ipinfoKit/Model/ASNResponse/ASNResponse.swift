@@ -8,7 +8,6 @@
 import Foundation
 public struct ASNResponse:Codable {
     
-    
     let asn: String?
     let name: String?
     let country: String?
@@ -42,7 +41,6 @@ public struct ASNResponse:Codable {
         case upstreams = "upstreams"
         case downstreams = "downstreams"
     }
-    
     
     init(
         asn: String,

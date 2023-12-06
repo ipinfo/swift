@@ -20,8 +20,4 @@ public class Company:Codable {
         self.domain = domain
         self.type = type
     }
-
-    public var description: String {
-        return "Company{name='\(name)', domain='\(domain)', type='\(type)'}"
-    }
 }

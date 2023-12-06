@@ -50,7 +50,3 @@ class CachingManager {
     }
 }
 
-struct CachedData<T> {
-    let data: [String: T]
-    let expirationDate: Date
-}

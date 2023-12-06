@@ -155,12 +155,6 @@ public struct IPResponse: Codable {
     public var getDomains: Domains? {
         return domains
     }
-    
-    public var description: String {
-        return bogon ?? false ?
-        "IPResponse{ip='\(ip ?? "")', bogon='\(bogon ?? false)'}" :
-        "IPResponse{ip='\(ip ?? "")', hostname='\(hostname ?? "")', anycast=\(anycast ?? false), city='\(city ?? "")', region='\(region ?? "")', country='\(country ?? "")', loc='\(loc ?? "")', org='\(org ?? "")', postal='\(postal ?? "")', timezone='\(timezone ?? "")', asn=\(asn?.description ?? ""), company=\(company?.description ?? ""), carrier=\(carrier?.description ?? ""), privacy=\(privacy?.description ?? ""), abuse=\(abuse?.description ?? ""), domains=\(domains?.description ?? "")}"
-    }
 }
 
 extension Array {

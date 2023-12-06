@@ -17,8 +17,4 @@ public class Continent:Codable {
         self.code = code
         self.name = name
     }
-
-    public var description: String {
-        return "Continent{code='\(code)', name='\(name)'}"
-    }
 }

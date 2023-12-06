@@ -29,8 +29,4 @@ public class Privacy: Codable {
         self.hosting = hosting
         self.service = service
     }
-
-    public var description: String {
-        return "Privacy{vpn=\(vpn), proxy=\(proxy), tor=\(tor), relay=\(relay), hosting=\(hosting), service='\(service)'}"
-    }
 }

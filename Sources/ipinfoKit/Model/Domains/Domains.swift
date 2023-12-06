@@ -17,8 +17,4 @@ public class Domains: Codable {
         self.total = total
         self.domains = domains
     }
-
-    public var description: String {
-        return "Domains{total='\(total)', domains=\(domains)}"
-    }
 }

@@ -1,5 +1,3 @@
-
-
 # [<img src="https://ipinfo.io/static/ipinfo-small.svg" alt="IPinfo" width="24"/>](https://ipinfo.io/) Official Swift client library for IPinfo API (IP geolocation and other types of IP data)
 
 This is the official Swift client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to look up your own IP address, or get any of the following details for other IP addresses:
@@ -156,7 +154,7 @@ IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
 This library provides an easy way to get the latitude and longitude of an IP Address:
 
 ```swift
-IPINFO.shared.lookupIP(ip: "8.8.8.8") { status, response, msg in
+IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
     guard let response else {return}
     switch status {
         case .success:

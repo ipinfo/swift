@@ -20,8 +20,4 @@ public class Carrier: Codable {
         self.mcc = mcc
         self.mnc = mnc
     }
-
-    public var description: String {
-        return "Carrier{name='\(name)', mcc='\(mcc)', mnc='\(mnc)'}"
-    }
 }
