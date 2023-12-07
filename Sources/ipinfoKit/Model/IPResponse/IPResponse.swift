@@ -108,57 +108,11 @@ public struct IPResponse: Codable {
         return context.getContinent(country ?? "")
     }
     
-    public var getLocation: String? {
-        return loc
-    }
-    
     public var getLatitude: String? {
         return loc?.components(separatedBy: ",")[safe: 0]
     }
     
     public var getLongitude: String? {
         return loc?.components(separatedBy: ",")[safe: 1]
-    }
-    
-    public var getOrg: String? {
-        return org
-    }
-    
-    public var getPostal: String? {
-        return postal
-    }
-    
-    public var getTimezone: String? {
-        return timezone
-    }
-    
-    public var getAsn: ASN? {
-        return asn
-    }
-    
-    public var getCompany: Company? {
-        return company
-    }
-    
-    public var getCarrier: Carrier? {
-        return carrier
-    }
-    
-    public var getPrivacy: Privacy? {
-        return privacy
-    }
-    
-    public var getAbuse: Abuse? {
-        return abuse
-    }
-    
-    public var getDomains: Domains? {
-        return domains
-    }
-}
-
-extension Array {
-    subscript(safe index: Index) -> Element? {
-        return indices.contains(index) ? self[index] : nil
     }
 }
