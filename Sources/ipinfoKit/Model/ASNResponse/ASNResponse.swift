@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 public struct ASNResponse:Codable {
     
     let asn: String?
