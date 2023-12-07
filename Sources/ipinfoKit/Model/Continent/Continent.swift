@@ -6,15 +6,20 @@
 //
 
 import Foundation
-public class Continent:Codable {
-    public let code: String
-    public let name: String
+public class Continent: Codable {
 
-    public init(
-        code: String,
-        name: String
-    ) {
-        self.code = code
-        self.name = name
-    }
+	// MARK: Lifecycle
+
+	public init(
+		code: String,
+		name: String) {
+		self.code = code
+		self.name = name
+	}
+
+	// MARK: Public
+
+	public let code: String
+	public let name: String
+
 }

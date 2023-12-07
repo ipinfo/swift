@@ -8,9 +8,9 @@
 import Foundation
 import Network
 
-open class IPINFO{
+open class IPINFO {
     
-    //MARK:  Variables
-    public static let `shared` = IPINFO()
+	// MARK:  Variables
+	public static let `shared` = IPINFO()
 
 }

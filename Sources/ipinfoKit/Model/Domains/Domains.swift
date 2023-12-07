@@ -7,14 +7,19 @@
 
 import Foundation
 public class Domains: Codable {
-    public let total: Int
-    public let domains: [String]
 
-    public init(
-        total: Int,
-        domains: [String]
-    ) {
-        self.total = total
-        self.domains = domains
-    }
+	// MARK: Lifecycle
+
+	public init(
+		total: Int,
+		domains: [String]) {
+		self.total = total
+		self.domains = domains
+	}
+
+	// MARK: Public
+
+	public let total: Int
+	public let domains: [String]
+
 }
