@@ -17,7 +17,6 @@ extension Service{
 }
 
 extension Service.Router{
-    
     var endPoint: String{
         switch self {
         case .geoLocation(let ipAddress):

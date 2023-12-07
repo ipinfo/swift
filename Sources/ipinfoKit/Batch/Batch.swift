@@ -6,10 +6,15 @@
 //
 
 import Foundation
+
 extension IPINFO{
-    public func getBatch(ipAddresses:  [String], withFilter: Bool, completion: @escaping (_ status: Response,_ data: [String: Any ]?,_ msg: String)->()){
+    public func getBatch(ipAddresses:  [String], withFilter: Bool, completion: @escaping (_ status: Response,_ data: [String: Any ]?,_ msg: String)->()) {
         var result: [String: Any]
-        var newIPs: [String] = [] // Array to store new IP addresses that are not present in the cache
+        var newIPs: [String] = []
+        var minbatchSize = Int()
+        let group = DispatchGroup()
+        let batchMaxSize = 1000
+        
         result = [String: Any]()
         // Loop through the input IP addresses and separate them into valid and bogon IP addresses
         for ipAddress in ipAddresses {
@@ -46,11 +51,48 @@ extension IPINFO{
             }else{
                 print("Invalid Data")
             }
-            
         }
         
+        if newIPs.count > batchMaxSize {
+            minbatchSize = batchMaxSize
+        } else {
+            minbatchSize = newIPs.count
+        }
+        
+        var batches = [Array<String>]()
+        while !newIPs.isEmpty {
+            let batchSize = min(newIPs.count, minbatchSize)
+            let batch = Array(newIPs.prefix(batchSize))
+            batches.append(batch)
+            newIPs.removeSubrange(0..<batchSize)
+        }
+        
+        for eachBatch in batches{
+            group.enter()
+            callBatchAPI(batch: eachBatch, withFilter: false) { status, data, msg in
+                switch status {
+                case .success:
+                    guard let data else {
+                        group.leave()
+                        return
+                    }
+                    result.merge(data) { (current, new) in new }
+                    group.leave()
+                case .failure:
+                    group.leave()
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            completion(.success, result, "Success")
+        }
+    }
+    
+    func callBatchAPI(batch:  [String], withFilter: Bool, completion: @escaping (_ status: Response,_ data: [String: Any ]?,_ msg: String)->()){
+        var result = [String: Any]()
         // Serialize the new IP addresses into JSON data
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: newIPs, options: []) else {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: batch, options: []) else {
             completion(.failure, nil, "Failed to serialize request body")
             return
         }
@@ -78,9 +120,9 @@ extension IPINFO{
             }
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] // Deserialize incoming data into a JSON dictionary
-                for eachIP in newIPs {
+                for eachIP in batch {
                     
-                    result[eachIP] = json?[eachIP] 
+                    result[eachIP] = json?[eachIP]
                     
                     if eachIP.starts(with: "AS"){
                         if let asnData = result[eachIP] as? ASNResponse{
@@ -102,4 +144,5 @@ extension IPINFO{
         }
         task.resume()
     }
+    
 }
