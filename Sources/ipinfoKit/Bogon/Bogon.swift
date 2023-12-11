@@ -1,13 +1,17 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by ahmed on 2023-04-09.
 //
 
 import Foundation
-extension IPINFO{
+extension IPINFO {
     func isBogonIP(_ ipAddress: String) -> Bool {
+        // TODO: Skipping local-bogon checking for IPv6 because of not supporting IPv6 checks below yet.
+        if ipAddress.ipType == .IPv6 {
+            return false
+        }
         let ipString = ipAddress.prefix(while: { $0 != "/" })
         let bogonRanges = [
             "0.0.0.0/8", // Current network (RFC 1122)
@@ -23,7 +27,7 @@ extension IPINFO{
             "198.51.100.0/24", // Documentation (RFC 6890)
             "203.0.113.0/24", // Documentation (RFC 6890)
             "224.0.0.0/4", // Multicast (RFC 5771)
-            "240.0.0.0/4" // Reserved (RFC 1112)
+            "240.0.0.0/4", // Reserved (RFC 1112)
         ]
         
         for range in bogonRanges {
