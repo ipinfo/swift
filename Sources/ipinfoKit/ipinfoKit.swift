@@ -10,7 +10,7 @@ import Network
 
 open class IPINFO {
     
-	// MARK:  Variables
-	public static let `shared` = IPINFO()
-
+    // MARK:  Variables
+    public static let `shared` = IPINFO()
+    
 }
