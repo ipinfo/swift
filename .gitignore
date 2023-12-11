@@ -90,3 +90,5 @@ fastlane/test_output
 iOSInjectionProject/
 Source/.DS_Store
 Tests/.DS_Store
+.swiftpm/.DS_Store
+.DS_Store
