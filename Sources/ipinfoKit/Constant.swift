@@ -2,7 +2,6 @@
 //  File.swift
 //
 //
-//  Created by mslm on 14/03/2023.
 //
 
 import Foundation
