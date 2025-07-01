@@ -28,8 +28,6 @@ let package = Package(
             .testTarget(
                 name: "ipinfoKitTests",
                 dependencies: ["ipinfoKit"],
-                path: "Tests",
-                sources: [
-                    "ipinfoKitTests/ipinfoKitTests.swift",
-                ]),
+                path: "Tests"
+              ),
     ])
