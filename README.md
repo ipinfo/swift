@@ -167,6 +167,12 @@ IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
 }
 ```
 
+# Contributing
+
+## Running the tests
+
+Some tests require a [token](https://ipinfo.io/dashboard/token) to pass. You can add yours as an [environment variable of the scheme](https://developer.apple.com/documentation/xcode/customizing-the-build-schemes-for-a-project/#Specify-launch-arguments-and-environment-variables).  
+
 # Other Libraries
 
 There are official [IPinfo client libraries](https://ipinfo.io/developers/libraries) available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails, and Laravel. There are also many third-party libraries and integrations available for our API.

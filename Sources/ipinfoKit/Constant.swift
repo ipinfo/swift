@@ -1,7 +1,5 @@
 import Foundation
 
-public let emptyString = ""
-
 // MARK: - Constants
 
 open class Constants {
@@ -10,15 +8,15 @@ open class Constants {
     
     /// Getting Application Version from info.plist
     static var APP_VERSION: String {
-        Bundle.main.appVersion ?? emptyString
+        Bundle.main.appVersion ?? ""
     }
     
     static var APP_NAME: String {
-        Bundle.main.appName ?? emptyString
+        Bundle.main.appName ?? ""
     }
     
     static var ACCESS_TOKEN: String {
-        Bundle.main.accessToken ?? emptyString
+      Bundle.main.accessToken ?? ProcessInfo.processInfo.environment["IPInfoKitAccessToken"] ?? ""
     }
     
 }
