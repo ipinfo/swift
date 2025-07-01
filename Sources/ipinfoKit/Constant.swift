@@ -1,11 +1,4 @@
-//
-//  File.swift
-//
-//
-//
-
 import Foundation
-import UIKit
 
 public let emptyString = ""
 
