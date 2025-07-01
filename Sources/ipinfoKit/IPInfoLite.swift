@@ -37,7 +37,35 @@ open class IPInfoLite {
 
 @available(iOS 13.0.0, macOS 10.15.0, *)
 extension IPInfoLite {
-  public struct Response: Equatable, Decodable {
+  public enum Response: Equatable, Decodable {
+    private enum CodingKeys: CodingKey {
+      case bogon
+    }
+
+    case ip(IPResponse)
+    case bogon(BogonResponse)
+
+    public init(from decoder: any Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      let isBogon = try container.decodeIfPresent(Bool.self, forKey: .bogon) ?? false
+
+      if isBogon {
+        self = .bogon(try BogonResponse(from: decoder))
+      } else {
+        self = .ip(try IPResponse(from: decoder))
+      }
+    }
+  }
+
+  public struct BogonResponse: Equatable, Decodable {
+    public let ip: String
+
+    public init(ip: String) {
+      self.ip = ip
+    }
+  }
+
+  public struct IPResponse: Equatable, Decodable {
     public let ip: String
     public let asn: String
     public let asName: String

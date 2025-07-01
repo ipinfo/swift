@@ -10,15 +10,17 @@ struct IPInfoLiteTests {
       let response = try await client.lookup(ip: "1.1.1.1")
 
       #expect(
-        response == IPInfoLite.Response(
-          ip: "1.1.1.1",
-          asn: "AS13335",
-          asName: "Cloudflare, Inc.",
-          asDomain: "cloudflare.com",
-          countryCode: "AU",
-          country: "Australia",
-          continentCode: "OC",
-          continent: "Oceania"
+        response == .ip(
+          .init(
+            ip: "1.1.1.1",
+            asn: "AS13335",
+            asName: "Cloudflare, Inc.",
+            asDomain: "cloudflare.com",
+            countryCode: "AU",
+            country: "Australia",
+            continentCode: "OC",
+            continent: "Oceania"
+          )
         )
       )
     }
@@ -28,17 +30,6 @@ struct IPInfoLiteTests {
 
     let response = try await client.lookup(ip: "192.168.1.1")
 
-    #expect(
-      response == IPInfoLite.Response(
-        ip: "1.1.1.1",
-        asn: "AS13335",
-        asName: "Cloudflare, Inc.",
-        asDomain: "cloudflare.com",
-        countryCode: "AU",
-        country: "Australia",
-        continentCode: "OC",
-        continent: "Oceania"
-      )
-    )
+    #expect(response == .bogon(.init(ip: "192.168.1.1")))
   }
 }
