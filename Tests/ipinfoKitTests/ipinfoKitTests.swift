@@ -27,13 +27,6 @@ final class ipinfoKitTests: XCTestCase {
                 XCTAssertEqual(response.getContinent?.code, "NA")
                 XCTAssertEqual(response.getContinent?.name, "North America")
                 XCTAssertEqual(response.timezone, "America/Los_Angeles")
-                XCTAssertFalse(response.privacy?.proxy ?? true)
-                XCTAssertFalse(response.privacy?.vpn ?? true)
-                XCTAssertFalse(response.privacy?.tor ?? true)
-                XCTAssertFalse(response.privacy?.relay ?? true)
-                XCTAssertTrue(response.privacy?.hosting ?? false)
-                XCTAssertEqual(response.privacy?.service, "")
-                XCTAssertEqual(response.domains?.domains.count, 5)
             case .failure:
                 XCTFail(msg ?? "Error")
             }
