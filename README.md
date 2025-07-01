@@ -167,6 +167,36 @@ IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
 }
 ```
 
+# Lite API
+
+The library gives the possibility to use the [Lite API](https://ipinfo.io/developers/lite-api) too, authentication with your token is still required.
+
+The returned details are slightly different from the Core API.
+
+```swift
+let client = IPInfoLite(token: "YOUR TOKEN")
+let response = try await client.lookup(ip: "1.1.1.1")
+
+switch response {
+case .bogon(let bogon):
+  print(bogon.ip) // 192.168.2.1
+case .ip(let ip):
+  print(ip)
+  /*
+    IPInfoLite.IPResponse(
+      ip: "1.1.1.1",
+      asn: "AS13335",
+      asName: "Cloudflare, Inc.",
+      asDomain: "cloudflare.com",
+      countryCode: "AU",
+      country: "Australia",
+      continentCode: "OC",
+      continent: "Oceania"
+    )
+  */
+}
+```
+
 # Contributing
 
 ## Running the tests
