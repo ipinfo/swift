@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1630"
+   LastUpgradeVersion = "1640"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -55,7 +55,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "IPInfoKitAccessToken"
-            value = ""
+            value = "17025cdd34b7a7"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

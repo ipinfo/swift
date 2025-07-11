@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v3
+      with:
+        path: |
+          .build
+          ~/.cache/org.swift.swiftpm
+        key: spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: spm-
+
+    - name: Resolve dependencies
+      run: swift package resolve
+
+    - name: Build
+      run: swift build --verbose
+
+    - name: Test
+      run: swift test --verbose
+      env:
+        IPInfoKitAccessToken: ${{ secrets.IPINFO_TOKEN }}
