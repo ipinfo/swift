@@ -27,12 +27,6 @@ jobs:
         key: spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: spm-
 
-    - name: Resolve dependencies
-      run: swift package resolve
-
-    - name: Build
-      run: swift build --verbose
-
     - name: Test
       run: swift test --verbose
       env:
