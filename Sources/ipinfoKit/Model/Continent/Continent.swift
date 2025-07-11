@@ -5,7 +5,7 @@
 //
 
 import Foundation
-public class Continent: Codable {
+public struct Continent: Codable, Sendable {
     
     // MARK: Lifecycle
     

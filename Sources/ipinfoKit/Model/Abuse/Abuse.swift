@@ -5,7 +5,8 @@
 //
 
 import Foundation
-public class Abuse: Codable {
+
+public struct Abuse: Codable, Sendable {
     
     // MARK: Lifecycle
     

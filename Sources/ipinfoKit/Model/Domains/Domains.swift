@@ -5,7 +5,7 @@
 //
 
 import Foundation
-public class Domains: Codable {
+public struct Domains: Codable, Sendable {
     
     // MARK: Lifecycle
     

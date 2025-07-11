@@ -3,6 +3,7 @@ import ipinfoKit
 import Foundation
 import Testing
 
+@MainActor
 struct IPInfoLiteTests {
     @Test func liteCloudflareDNSTest() async throws {
       let client = IPInfoLite(token: ProcessInfo.processInfo.environment["IPInfoKitAccessToken"] ?? "")

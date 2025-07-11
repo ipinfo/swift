@@ -1,6 +1,7 @@
 import Foundation
 
 @available(iOS 13.0.0, macOS 10.15.0, *)
+@MainActor
 open class IPInfoLite {
   private let urlSession: URLSession
   private let jsonDecoder: JSONDecoder = {

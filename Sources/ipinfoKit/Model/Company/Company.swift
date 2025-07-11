@@ -5,7 +5,7 @@
 //
 
 import Foundation
-public class Company: Codable {
+public struct Company: Codable, Sendable {
     
     // MARK: Lifecycle
     

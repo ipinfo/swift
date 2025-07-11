@@ -5,7 +5,7 @@
 //
 
 import Foundation
-public class Privacy: Codable {
+public struct Privacy: Codable, Sendable {
     
     // MARK: Lifecycle
     

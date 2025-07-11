@@ -1,6 +1,7 @@
 import XCTest
 @testable import ipinfoKit
 
+@MainActor
 final class ipinfoKitTests: XCTestCase {
     func testIPResponseInitialization() {
         let expectation = expectation(description: "IP details request")

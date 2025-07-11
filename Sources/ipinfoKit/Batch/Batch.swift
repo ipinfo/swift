@@ -97,8 +97,7 @@ extension IPINFO {
     func callBatchAPI(
         batch: [String],
         withFilter: Bool,
-        completion: @escaping (_ status: Response,_ data: [String: Any]?,_ msg: String) -> Void) {
-            var result = [String: Any]()
+        completion: @escaping @MainActor (_ status: Response,_ data: [String: Any]?,_ msg: String) -> Void) {
             // Serialize the new IP addresses into JSON data
             guard let jsonData = try? JSONSerialization.data(withJSONObject: batch, options: []) else {
                 completion(.failure, nil, "Failed to serialize request body")
@@ -116,39 +115,47 @@ extension IPINFO {
             request.httpBody = jsonData
             // Create a data task with the request
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
+              DispatchQueue.main.async {
+                var result = [String: Any]()
+
                 // Handle any error that occurred during the request
                 if let error {
-                    completion(.failure, nil, error.localizedDescription)
-                    return
+                  completion(.failure, nil, error.localizedDescription)
+                  return
                 }
                 // Handle empty response data
                 guard let data else {
-                    completion(.failure, nil, "Empty response data")
-                    return
+                  completion(.failure, nil, "Empty response data")
+                  return
                 }
                 do {
-                    let json = try JSONSerialization
-                        .jsonObject(with: data, options: []) as? [String: Any] // Deserialize incoming data into a JSON dictionary
-                    for eachIP in batch {
-                        
-                        result[eachIP] = json?[eachIP]
-                        
-                        if eachIP.starts(with: "AS") {
-                            if let asnData = result[eachIP] as? ASNResponse {
-                                CachingManager.shared.saveASNResult([eachIP: asnData])
-                            }
-                        } else if eachIP.ipType == .IPv4 || eachIP.ipType == .IPv6 {
-                            if let ipData = result[eachIP] as? IPResponse {
-                                CachingManager.shared.saveResult([eachIP: ipData])
-                            }
+                  let json = try JSONSerialization
+                    .jsonObject(with: data, options: []) as? [String: Any] // Deserialize incoming data into a JSON dictionary
+                  for eachIP in batch {
+
+                    result[eachIP] = json?[eachIP]
+
+                    if eachIP.starts(with: "AS") {
+                      if let asnData = result[eachIP] as? ASNResponse {
+                        DispatchQueue.main.async {
+                          CachingManager.shared.saveASNResult([eachIP: asnData])
                         }
+                      }
+                    } else if eachIP.ipType == .IPv4 || eachIP.ipType == .IPv6 {
+                      if let ipData = result[eachIP] as? IPResponse {
+                        DispatchQueue.main.async {
+                          CachingManager.shared.saveResult([eachIP: ipData])
+                        }
+                      }
                     }
+                  }
                 } catch {
-                    // Handle any errors that occur during JSON serialization/deserialization
-                    completion(.failure, nil, "Failed to Save Bulk response in Cache")
+                  // Handle any errors that occur during JSON serialization/deserialization
+                  completion(.failure, nil, "Failed to Save Bulk response in Cache")
                 }
-                
+
                 completion(.success, result, "Success")
+              }
             }
             task.resume()
         }

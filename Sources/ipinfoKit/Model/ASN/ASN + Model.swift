@@ -5,7 +5,7 @@
 //
 
 import Foundation
-public class ASN: Codable {
+public struct ASN: Codable, Sendable {
     
     // MARK: Lifecycle
     

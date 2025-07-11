@@ -6,7 +6,7 @@
 
 import Foundation
 
-public struct IPResponse: Codable {
+public struct IPResponse: Codable, Sendable {
     
     // MARK: Lifecycle
     
@@ -57,6 +57,7 @@ public struct IPResponse: Codable {
         context.isEU(country ?? "")
     }
     
+    @MainActor
     public var getCountryFlag: CountryFlag? {
         context.getCountryFlag(country ?? "")
     }
@@ -65,10 +66,12 @@ public struct IPResponse: Codable {
         context.getCountryFlagURL(country ?? "")
     }
     
+    @MainActor
     public var getCountryCurrency: CountryCurrency? {
         context.getCountryCurrency(country ?? "")
     }
     
+    @MainActor
     public var getContinent: CountryContinent? {
         context.getContinent(country ?? "")
     }

@@ -2,6 +2,7 @@ import Foundation
 
 // MARK: - Constants
 
+@MainActor
 open class Constants {
     
     static let shared = Constants()
