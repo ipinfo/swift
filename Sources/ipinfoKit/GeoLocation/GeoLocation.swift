@@ -21,7 +21,9 @@ extension IPINFO {
                     switch status {
                     case .success:
                         do {
-                            let response = try JSONDecoder().decode(IPResponse.self, from: data)
+                            var decoder = JSONDecoder()
+                            decoder.keyDecodingStrategy = .convertFromSnakeCase
+                            let response = try decoder.decode(IPResponse.self, from: data)
                             if response.bogon ?? false {
                                 completion(.failure, nil, "IP is Bogon")
                             } else {
