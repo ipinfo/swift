@@ -8,7 +8,7 @@ import Foundation
 
 // MARK: - CountryFlag
 
-public struct CountryFlag: Codable {
+public struct CountryFlag: Codable, Sendable {
     let emoji: String
     let unicode: String
     
@@ -19,8 +19,7 @@ public struct CountryFlag: Codable {
 }
 
 // MARK: - CountryCurrency
-
-public struct CountryCurrency: Codable {
+public struct CountryCurrency: Codable, Sendable {
     let code: String
     let symbol: String
     
@@ -31,8 +30,7 @@ public struct CountryCurrency: Codable {
 }
 
 // MARK: - CountryContinent
-
-public struct CountryContinent: Codable {
+public struct CountryContinent: Codable, Sendable {
     let code: String
     let name: String
     
@@ -43,8 +41,13 @@ public struct CountryContinent: Codable {
 }
 
 // MARK: - CountryData
-
-public class CountryData: Codable {
+public struct CountryData: Codable, Sendable {
+    
+    // MARK: Lifecycle
+    
+    public init() {
+        self.countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/"
+    }
     
     // MARK: Public
     
@@ -52,6 +55,7 @@ public class CountryData: Codable {
         CountryData.countryMap[countryCode] ?? ""
     }
     
+    @MainActor
     public func getCountryFlag(_ countryCode: String) -> CountryFlag {
         CountryData.countriesFlags[countryCode] ?? CountryFlag(emoji: "", unicode: "")
     }
@@ -60,10 +64,12 @@ public class CountryData: Codable {
         countryFlagURL + countryCode + ".svg"
     }
     
+    @MainActor
     public func getCountryCurrency(_ countryCode: String) -> CountryCurrency {
         CountryData.countriesCurrencies[countryCode] ?? CountryCurrency(code: "", symbol: "")
     }
     
+    @MainActor
     public func getContinent(_ countryCode: String) -> CountryContinent {
         CountryData.continents[countryCode] ?? CountryContinent(code: "", name: "")
     }
@@ -333,6 +339,7 @@ public class CountryData: Codable {
         "RO", "BG", "BE",
     ]
     
+    @MainActor
     static let countriesFlags: [String: CountryFlag] = [
         "AD": CountryFlag(emoji: "🇦🇩", unicode: "U+1F1E6 U+1F1E9"),
         "AE": CountryFlag(emoji: "🇦🇪", unicode: "U+1F1E6 U+1F1EA"),
@@ -585,6 +592,7 @@ public class CountryData: Codable {
         "ZM": CountryFlag(emoji: "🇿🇲", unicode: "U+1F1FF U+1F1F2"),
         "ZW": CountryFlag(emoji: "🇿🇼", unicode: "U+1F1FF U+1F1FC"),
     ]
+    @MainActor
     static let countriesCurrencies: [String: CountryCurrency] = [
         "AD": CountryCurrency(code: "EUR", symbol: "€"),
         "AE": CountryCurrency(code: "AED", symbol: "د.إ"),
@@ -838,6 +846,7 @@ public class CountryData: Codable {
         "ZW": CountryCurrency(code: "ZWL", symbol: "Z$"),
     ]
     
+    @MainActor
     static let continents: [String: CountryContinent] = [
         
         "BD": CountryContinent(code: "AS", name: "Asia"),
@@ -1092,5 +1101,5 @@ public class CountryData: Codable {
         "MZ": CountryContinent(code: "AF", name: "Africa"),
     ]
     
-    final var countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/"
+    let countryFlagURL: String
 }

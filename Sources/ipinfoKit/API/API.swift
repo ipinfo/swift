@@ -18,6 +18,7 @@ extension Service {
 }
 
 extension Service.Router {
+    @MainActor
     var endPoint: String {
         switch self {
         case .geoLocation(let ipAddress):
@@ -32,6 +33,7 @@ extension Service.Router {
 
 // MARK: - Service
 
+@MainActor
 class Service {
     
     // MARK: Lifecycle
@@ -47,6 +49,7 @@ class Service {
         "Authorization": "Bearer \(Constants.ACCESS_TOKEN)",
     ]
     
+    @MainActor
     func requestAPI(
         URL: Service.Router,
         method: HTTPMethod,
@@ -55,12 +58,14 @@ class Service {
             
             AF.request(URL.endPoint , method: method, parameters: params , encoding: JSONEncoding.default, headers: headers)
                 .response { response in
-                    switch response.result {
-                    case .success(let value):
-                        completion(.success, value ?? Data(), "Success")
-                    case .failure(let err):
-                        completion(.failure, Data(), err.localizedDescription)
-                        break
+                    DispatchQueue.main.async {
+                        switch response.result {
+                        case .success(let value):
+                            completion(.success, value ?? Data(), "Success")
+                        case .failure(let err):
+                            completion(.failure, Data(), err.localizedDescription)
+                            break
+                        }
                     }
                 }
         }

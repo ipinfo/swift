@@ -6,7 +6,7 @@
 
 import Foundation
 
-public struct ASNResponse: Codable {
+public struct ASNResponse: Codable, Sendable {
     
     // MARK: Lifecycle
     

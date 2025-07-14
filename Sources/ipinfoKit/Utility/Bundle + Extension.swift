@@ -9,7 +9,7 @@ import Foundation
 extension Bundle {
     /// Fetching Api Key from Info.plist
     var accessToken: String? {
-        object(forInfoDictionaryKey: "IPInfoKitAccessToken") as? String
+      return object(forInfoDictionaryKey: "IPInfoKitAccessToken") as? String
     }
     
     /// Fetching App Version from Info.plist

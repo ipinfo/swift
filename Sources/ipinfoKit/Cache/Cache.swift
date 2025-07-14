@@ -1,12 +1,6 @@
-//
-//  File.swift
-//
-//
-//
-
 import Foundation
-import UIKit
 
+@MainActor
 class CachingManager {
     
     // MARK: Lifecycle

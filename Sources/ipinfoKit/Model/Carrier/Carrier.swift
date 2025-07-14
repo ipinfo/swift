@@ -5,7 +5,7 @@
 //
 
 import Foundation
-public class Carrier: Codable {
+public struct Carrier: Codable, Sendable {
     
     // MARK: Lifecycle
     
