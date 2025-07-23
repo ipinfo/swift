@@ -47,6 +47,7 @@ class Service {
     var ipInfoURL = "https://ipinfo.io"
     let headers: HTTPHeaders = [
         "Authorization": "Bearer \(Constants.ACCESS_TOKEN)",
+        "User-Agent": "IPinfoClient/Swift/\(Constants.SDK_VERSION)",
     ]
     
     @MainActor

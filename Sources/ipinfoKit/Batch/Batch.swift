@@ -107,6 +107,7 @@ extension IPINFO {
             let headers = [
                 "Authorization": "Bearer \(Constants.ACCESS_TOKEN)",
                 "Content-Type": "application/json",
+                "User-Agent": "IPinfoClient/Swift/\(Constants.SDK_VERSION)"
             ]
             // Create the URL request with appropriate method, headers, and body
             var request = URLRequest(url: URL(string: Service.Router.batch(withFilter: withFilter).endPoint)!)
