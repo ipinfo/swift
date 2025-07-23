@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -12,22 +12,25 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: "6.1.0"
+      - uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.1.0"
 
-    - name: Cache Swift Package Manager
-      uses: actions/cache@v3
-      with:
-        path: |
-          .build
-          ~/.cache/org.swift.swiftpm
-        key: spm-${{ hashFiles('**/Package.resolved') }}
-        restore-keys: spm-
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v3
+        with:
+          path: |
+            .build
+            ~/.cache/org.swift.swiftpm
+          key: spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: spm-
 
-    - name: Test
-      run: swift test --verbose
-      env:
-        IPInfoKitAccessToken: ${{ secrets.IPINFO_TOKEN }}
+      - name: Build (production)
+        run: swift build --configuration release
+
+      - name: Test
+        run: swift test --verbose
+        env:
+          IPInfoKitAccessToken: ${{ secrets.IPINFO_TOKEN }}
