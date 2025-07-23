@@ -23,6 +23,7 @@ open class IPInfoLite {
       "accept": "application/json",
       "authorization": "Bearer \(token)",
       "content-type": "application/json",
+      "user-agent": "IPinfoClient/Swift/\(Constants.SDK_VERSION)",
     ]
 
     let (data, response) = try await urlSession.data(for: urlRequest)

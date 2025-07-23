@@ -6,6 +6,8 @@ import Foundation
 open class Constants {
     
     static let shared = Constants()
+
+    static var SDK_VERSION: String = "0.2.0"
     
     /// Getting Application Version from info.plist
     static var APP_VERSION: String {
