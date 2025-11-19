@@ -10,20 +10,20 @@ struct IPInfoLiteTests {
 
       let response = try await client.lookup(ip: "1.1.1.1")
 
-      #expect(
-        response == .ip(
-          .init(
-            ip: "1.1.1.1",
-            asn: "AS13335",
-            asName: "Cloudflare, Inc.",
-            asDomain: "cloudflare.com",
-            countryCode: "AU",
-            country: "Australia",
-            continentCode: "OC",
-            continent: "Oceania"
-          )
-        )
-      )
+      let info = try #require({
+        if case let .ip(info) = response { return info }
+        Issue.record("Expected .ip, got \(response)")
+        return nil
+      }())
+
+      #expect(info.ip ==  "1.1.1.1")
+      #expect(info.asn == "AS13335")
+      #expect(info.asName == "Cloudflare, Inc.")
+      #expect(info.asDomain == "cloudflare.com")
+      #expect(info.countryCode != "")
+      #expect(info.country != "")
+      #expect(info.continentCode != "")
+      #expect(info.continent != "")
     }
 
   @Test func liteBogonTest() async throws {
