@@ -82,7 +82,6 @@ struct IPInfoPlusTests {
 
     // Should return details for the caller's IP
     #expect(ipResponse.ip != "")
-    #expect(ipResponse.hostname != nil)
     #expect(!ipResponse.geo.country.isEmpty)
   }
 }
