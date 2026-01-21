@@ -14,6 +14,7 @@ extension Service {
         case geoLocation(ipAddress: String)
         case ASN(asn: String)
         case batch(withFilter: Bool)
+        case resproxy(ipAddress: String)
     }
 }
 
@@ -27,6 +28,8 @@ extension Service.Router {
             "\(Service.shared.ipInfoURL)/\(asn)/json"
         case .batch(let withFilter):
             "\(Service.shared.ipInfoURL)/batch" + (withFilter ? "&filter=1" : "")
+        case .resproxy(let ipAddress):
+            "\(Service.shared.ipInfoURL)/resproxy/\(ipAddress)"
         }
     }
 }
