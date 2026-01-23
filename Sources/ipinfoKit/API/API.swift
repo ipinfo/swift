@@ -37,7 +37,7 @@ extension Service.Router {
 // MARK: - Service
 
 @MainActor
-class Service {
+public class Service {
     
     // MARK: Lifecycle
     
@@ -45,13 +45,16 @@ class Service {
     
     // MARK: Internal
     
-    static let shared = Service()
+    public static let shared = Service()
     
     var ipInfoURL = "https://ipinfo.io"
     let headers: HTTPHeaders = [
         "Authorization": "Bearer \(Constants.ACCESS_TOKEN)",
         "User-Agent": "IPinfoClient/Swift/\(Constants.SDK_VERSION)",
     ]
+    
+    /// Custom session for testing. When nil, uses default AF session.
+    public var session: Session?
     
     @MainActor
     func requestAPI(
@@ -60,7 +63,8 @@ class Service {
         params: Parameters? = nil,
         completion: @escaping (_ status: Response,_ data: Data,_ msg: String) -> Void) {
             
-            AF.request(URL.endPoint , method: method, parameters: params , encoding: JSONEncoding.default, headers: headers)
+            let requestSession = session ?? AF
+            requestSession.request(URL.endPoint , method: method, parameters: params , encoding: JSONEncoding.default, headers: headers)
                 .response { response in
                     DispatchQueue.main.async {
                         switch response.result {
