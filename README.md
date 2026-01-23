@@ -16,7 +16,7 @@ The free plan is limited to 50,000 requests per month, and doesn't include some 
 
 ### Swift Package Manager
 
-The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. 
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
 Once you have your Swift package set up, adding ipinfo as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
 
@@ -89,6 +89,7 @@ IPINFO.shared.getBatch(ipAddresses: ipAddresses, withFilter: false) { status, re
 # Country Name Lookup
 
 This library provides a system to lookup country names through ISO2 country codes.
+
 ```swift
 IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
     guard let response else {return}
@@ -99,7 +100,7 @@ IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
             print(response.country)
             // Print out the country name
             print(response.countryName)
-            
+
         case .failure:
             print(msg)
     }
@@ -109,6 +110,7 @@ IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
 # EU Country Lookup
 
 This library provides a system to lookup if a country is a member of the European Union (EU) through ISO2 country codes.
+
 ```swift
 IPINFO.shared.getDetails(ip: "8.8.8.8") { status, response, msg in
     guard let response else {return}
@@ -197,11 +199,58 @@ case .ip(let ip):
 }
 ```
 
+# Core API
+
+The library also supports the [Core API](https://ipinfo.io/developers/data-types#core-data), which provides city-level geolocation with nested geo and AS objects. Authentication with your token is required.
+
+```swift
+let client = IPInfoCore(token: "YOUR TOKEN")
+let response = try await client.lookup(ip: "8.8.8.8")
+
+print(response.ip) // 8.8.8.8
+print(response.geo.city) // Mountain View
+print(response.geo.country) // United States
+print(response.as.asn) // AS15169
+print(response.as.name) // Google LLC
+```
+
+# Plus API
+
+The library also supports the [Plus API](https://ipinfo.io/developers/data-types#plus-data), which provides enhanced data including mobile carrier info and privacy detection. Authentication with your token is required.
+
+```swift
+let client = IPInfoPlus(token: "YOUR TOKEN")
+let response = try await client.lookup(ip: "8.8.8.8")
+
+print(response.ip) // 8.8.8.8
+print(response.geo.city) // Mountain View
+print(response.mobile) // mobile carrier info
+print(response.anonymous.isProxy) // false
+```
+
+# Residential Proxy API
+
+The library also supports the [Residential Proxy API](https://ipinfo.io/developers/residential-proxy-api), which allows you to check if an IP address is a residential proxy. Authentication with your token is required.
+
+```swift
+IPINFO.shared.getResproxyDetails(ip: "175.107.211.204") { status, data, msg in
+    switch status {
+        case .success:
+            print(data?.ip) // 175.107.211.204
+            print(data?.lastSeen) // 2025-01-20
+            print(data?.percentDaysSeen) // 0.85
+            print(data?.service) // Bright Data
+        case .failure:
+            print(msg)
+    }
+}
+```
+
 # Contributing
 
 ## Running the tests
 
-Some tests require a [token](https://ipinfo.io/dashboard/token) to pass. You can add yours as an [environment variable of the scheme](https://developer.apple.com/documentation/xcode/customizing-the-build-schemes-for-a-project/#Specify-launch-arguments-and-environment-variables).  
+Some tests require a [token](https://ipinfo.io/dashboard/token) to pass. You can add yours as an [environment variable of the scheme](https://developer.apple.com/documentation/xcode/customizing-the-build-schemes-for-a-project/#Specify-launch-arguments-and-environment-variables).
 
 # Other Libraries
 
