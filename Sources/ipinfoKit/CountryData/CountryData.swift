@@ -615,7 +615,7 @@ public struct CountryData: Codable, Sendable {
         "BD": CountryCurrency(code: "BDT", symbol: "৳"),
         "BE": CountryCurrency(code: "EUR", symbol: "€"),
         "BF": CountryCurrency(code: "XOF", symbol: "CFA"),
-        "BG": CountryCurrency(code: "BGN", symbol: "лв"),
+        "BG": CountryCurrency(code: "EUR", symbol: "€"),
         "BH": CountryCurrency(code: "BHD", symbol: ".د.ب"),
         "BI": CountryCurrency(code: "BIF", symbol: "FBu"),
         "BJ": CountryCurrency(code: "XOF", symbol: "CFA"),
