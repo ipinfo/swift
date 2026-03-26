@@ -61,20 +61,16 @@ public class Service {
         URL: Service.Router,
         method: HTTPMethod,
         params: Parameters? = nil,
-        completion: @escaping (_ status: Response,_ data: Data,_ msg: String) -> Void) {
-            
-            let requestSession = session ?? AF
-            requestSession.request(URL.endPoint , method: method, parameters: params , encoding: JSONEncoding.default, headers: headers)
-                .response { response in
-                    DispatchQueue.main.async {
-                        switch response.result {
-                        case .success(let value):
-                            completion(.success, value ?? Data(), "Success")
-                        case .failure(let err):
-                            completion(.failure, Data(), err.localizedDescription)
-                            break
-                        }
-                    }
+        completion: @escaping (_ status: Response, _ data: Data, _ msg: String) -> Void) {
+        let requestSession = session ?? AF
+        requestSession.request(URL.endPoint, method: method, parameters: params, encoding: JSONEncoding.default, headers: headers)
+            .response(queue: .main) { response in
+                switch response.result {
+                case .success(let value):
+                    completion(.success, value ?? Data(), "Success")
+                case .failure(let err):
+                    completion(.failure, Data(), err.localizedDescription)
                 }
-        }
+            }
+    }
 }
